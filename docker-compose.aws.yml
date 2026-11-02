@@ -1,0 +1,10 @@
+# Used only on EC2: ship every container log to CloudWatch Logs (free tier: 5 GB ingest per month).
+# The EC2 instance role may write to /lab01/app and nothing else.
+x-logs: &logs
+  driver: awslogs
+  options: {awslogs-region: "${AWS_REGION:-us-east-2}", awslogs-group: /lab01/app, tag: "{{.Name}}"}
+services:
+  web: {logging: *logs}
+  onboarding: {logging: *logs}
+  offboarding: {logging: *logs}
+  dashboard: {logging: *logs}

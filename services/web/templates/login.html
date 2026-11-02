@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block body %}
+<div class="card form"><h1>Sign in</h1><p class="sub">Administrator credentials are stored in AWS Secrets Manager (<code>nimbus/web-login</code>).</p>
+<form method="post"><label>Username</label><input name="username" autocomplete="username" required>
+<label>Password</label><input name="password" type="password" autocomplete="current-password" required>
+<p><button>Sign in</button></p></form></div>{% endblock %}

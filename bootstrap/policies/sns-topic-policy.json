@@ -1,0 +1,2 @@
+{"Version":"2012-10-17","Statement":[{"Sid":"AllowEventBridgePublish","Effect":"Allow","Principal":{"Service":"events.amazonaws.com"},
+ "Action":"sns:Publish","Resource":"__TOPIC_ARN__","Condition":{"StringEquals":{"aws:SourceAccount":"__ACCOUNT_ID__"}}}]}

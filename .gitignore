@@ -1,0 +1,7 @@
+.env
+*.pem
+__pycache__/
+.nimbus-state
+.venv/
+.pytest_cache/
+certs/

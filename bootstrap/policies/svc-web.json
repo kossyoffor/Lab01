@@ -1,0 +1,3 @@
+{"Version":"2012-10-17","Statement":
+[{"Sid":"ReadOwnSecrets","Effect":"Allow","Action":"secretsmanager:GetSecretValue",
+ "Resource":["arn:aws:secretsmanager:__REGION__:__ACCOUNT_ID__:secret:nimbus/web-login-*","arn:aws:secretsmanager:__REGION__:__ACCOUNT_ID__:secret:nimbus/internal-token-*"]}]}

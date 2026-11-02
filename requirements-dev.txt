@@ -1,0 +1,3 @@
+-r requirements.txt
+pytest>=8
+moto[server,iam,s3,secretsmanager,sts]>=5

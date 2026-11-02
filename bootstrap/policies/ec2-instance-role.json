@@ -1,0 +1,20 @@
+{
+ "Version": "2012-10-17",
+ "Statement": [
+  {
+   "Sid": "OnlyAssumeServiceRoles",
+   "Effect": "Allow",
+   "Action": "sts:AssumeRole",
+   "Resource": "arn:aws:iam::__ACCOUNT_ID__:role/nimbus/nimbus-*-svc"
+  },
+  {
+   "Sid": "DockerAwslogsDriverWritesAppLogs",
+   "Effect": "Allow",
+   "Action": [
+    "logs:CreateLogStream",
+    "logs:PutLogEvents"
+   ],
+   "Resource": "arn:aws:logs:__REGION__:__ACCOUNT_ID__:log-group:/lab01/app:*"
+  }
+ ]
+}

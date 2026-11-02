@@ -1,0 +1,4 @@
+[{"Id":"email-the-security-topic","Arn":"__TOPIC_ARN__","InputTransformer":{
+  "InputPathsMap":
+{"event":"$.detail.eventName","who":"$.detail.userIdentity.arn","ip":"$.detail.sourceIPAddress","time":"$.time"},
+  "InputTemplate":"\"LAB01 SECURITY ALERT (__RULE__): <event> by <who> from <ip> at <time>\""}}]

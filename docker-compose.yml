@@ -1,0 +1,29 @@
+# Four microservices. Only `web` is published; the other three exist only on the
+# private compose network and also demand the X-Internal-Token header.
+# Local run: plain http on 8080. On EC2, user-data.sh sets WEB_PORT=8443, WEB_TLS_ARGS and COOKIE_SECURE in .env.
+x-common-env: &env
+  AWS_REGION: ${AWS_REGION:-us-east-2}
+  NIMBUS_BUCKET: ${NIMBUS_BUCKET:?set NIMBUS_BUCKET in .env}
+services:
+  web:
+    build: {context: ., args: {SERVICE: web, PORT: "${WEB_PORT:-8080}"}}
+    ports: ["${WEB_PORT:-8080}:${WEB_PORT:-8080}"]
+    environment: {<<: *env, ROLE_NAME: nimbus-web-svc, SERVICE_NAME: web, COOKIE_SECURE: "${COOKIE_SECURE:-0}", GUNICORN_EXTRA: "${WEB_TLS_ARGS:-}"}
+    volumes: ["./certs:/certs:ro"]
+    depends_on: [onboarding, offboarding, dashboard]
+    restart: unless-stopped
+  onboarding:
+    build: {context: ., args: {SERVICE: onboarding, PORT: "5001"}}
+    expose: ["5001"]
+    environment: {<<: *env, ROLE_NAME: nimbus-onboarding-svc, SERVICE_NAME: onboarding}
+    restart: unless-stopped
+  offboarding:
+    build: {context: ., args: {SERVICE: offboarding, PORT: "5002"}}
+    expose: ["5002"]
+    environment: {<<: *env, ROLE_NAME: nimbus-offboarding-svc, SERVICE_NAME: offboarding}
+    restart: unless-stopped
+  dashboard:
+    build: {context: ., args: {SERVICE: dashboard, PORT: "5003"}}
+    expose: ["5003"]
+    environment: {<<: *env, ROLE_NAME: nimbus-dashboard-svc, SERVICE_NAME: dashboard}
+    restart: unless-stopped

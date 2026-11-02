@@ -1,0 +1,69 @@
+{
+ "Version": "2012-10-17",
+ "Statement": [
+  {
+   "Sid": "CloseNimbusUsersOnly",
+   "Effect": "Allow",
+   "Action": [
+    "iam:GetUser",
+    "iam:ListAccessKeys",
+    "iam:UpdateAccessKey",
+    "iam:DeleteLoginProfile",
+    "iam:ListGroupsForUser",
+    "iam:TagUser"
+   ],
+   "Resource": "arn:aws:iam::__ACCOUNT_ID__:user/nimbus/*"
+  },
+  {
+   "Sid": "AttachOnlyTheDenyAllPolicy",
+   "Effect": "Allow",
+   "Action": "iam:AttachUserPolicy",
+   "Resource": "arn:aws:iam::__ACCOUNT_ID__:user/nimbus/*",
+   "Condition": {
+    "ArnEquals": {
+     "iam:PolicyARN": "arn:aws:iam::__ACCOUNT_ID__:policy/nimbus/Nimbus-DenyAll"
+    }
+   }
+  },
+  {
+   "Sid": "RemoveFromNimbusGroups",
+   "Effect": "Allow",
+   "Action": "iam:RemoveUserFromGroup",
+   "Resource": [
+    "arn:aws:iam::__ACCOUNT_ID__:user/nimbus/*",
+    "arn:aws:iam::__ACCOUNT_ID__:group/nimbus/*"
+   ]
+  },
+  {
+   "Sid": "RegistryAndAuditWrite",
+   "Effect": "Allow",
+   "Action": [
+    "s3:GetObject",
+    "s3:PutObject"
+   ],
+   "Resource": [
+    "arn:aws:s3:::__BUCKET__/registry/*",
+    "arn:aws:s3:::__BUCKET__/audit/*"
+   ]
+  },
+  {
+   "Sid": "ListRegistryForExistenceChecks",
+   "Effect": "Allow",
+   "Action": "s3:ListBucket",
+   "Resource": "arn:aws:s3:::__BUCKET__",
+   "Condition": {
+    "StringLike": {
+     "s3:prefix": [
+      "registry/*"
+     ]
+    }
+   }
+  },
+  {
+   "Sid": "ReadInternalToken",
+   "Effect": "Allow",
+   "Action": "secretsmanager:GetSecretValue",
+   "Resource": "arn:aws:secretsmanager:__REGION__:__ACCOUNT_ID__:secret:nimbus/internal-token-*"
+  }
+ ]
+}
